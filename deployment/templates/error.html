@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Error</title>
+    <!-- Link to the Favicon -->
+    <link rel="icon" href="{{ url_for('static', filename='images/favicon.ico') }}" type="image/x-icon">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #000000;
+            color: #FFFFFF;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            color: #FFFFFF;
+            font-size: 40px;
+            padding-top: 15px;
+            padding-bottom: 20px;
+            text-align: center;
+        }
+
+        p {
+            color: #FFFFFF;
+            font-size: 18px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        /* Style for the Go Back button */
+        .go-back-btn {
+            background-color: #7c1880;
+            color: #ffffff;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            text-decoration: none;
+            display: block;
+            margin: 20px auto;
+            text-align: center;
+            max-width: 200px;
+        }
+
+        .go-back-btn:hover {
+            background-color: #9c4db7;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>An Error Occurred</h1>
+    <p>{{ error_message }}</p>
+    <a href="javascript:history.back()" class="go-back-btn">Go Back</a>
+</body>
+
+</html>

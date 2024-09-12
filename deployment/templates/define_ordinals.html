@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Define Order for Multinomial Columns</title>
+    <!-- Link to the Favicon -->
+    <link rel="icon" href="{{ url_for('static', filename='images/favicon.ico') }}" type="image/x-icon">
+    <style>
+        /* General Styling */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #000000; /* Black background */
+            color: #FFFFFF;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            color: #FFFFFF; 
+            padding-top: 15px; /* Adds space at the top inside the h1 */
+            padding-bottom: 20px; /* Adds space at the bottom inside the h1 */
+            text-align: center; /* Centers the title */
+        }
+        
+        h2 {
+            color: #FFFFFF; 
+            text-align: center; /* Centers the title */
+            font-size: 20px;
+        }
+        
+        h3 {
+            color: #FFFFFF;
+            margin-top: 20px;
+            text-align: center;
+            font-size: 18px;
+        }
+
+
+        p {
+            color: #FFFFFF;
+            font-size: 16px;
+            text-align: left;
+        }
+        
+        /* Card container for each column section */
+        .card {
+            background-color: #1c1c1c;
+            border: 2px solid #7c1880;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        /* Style for labels and inputs */
+        label {
+            font-size: 16px;
+            color: #FFFFFF;
+            display: block;
+            margin-top: 10px;
+        }
+
+        /* Style for number input fields */
+        input[type="number"] {
+            width: 80px;
+            padding: 10px;
+            margin-top: 5px;
+            margin-right: 15px;
+            background-color: #1c1c1c;
+            border: 2px solid #7c1880;
+            color: #ffffff;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        input[type="number"]:focus {
+            outline: none;
+            border-color: #9c4db7;
+        }
+
+        /* Style the submit and go back buttons */
+        .button-container {
+            display: flex;
+            justify-content: center; /* Center both buttons */
+            max-width: 400px;
+            margin: 20px auto; /* Centers the flex container */
+            gap: 20px; /* Controls the gap between the buttons */
+        }
+        input[type="submit"], .go-back-btn {
+            background-color: #7c1880;
+            color: #ffffff;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            display: inline-block;
+            text-decoration: none; /* Remove underline for the Go Back link */
+            margin: 0 10px; /* Space between buttons */
+            margin-top: 30px;
+        }
+        input[type="submit"]:hover, .go-back-btn:hover {
+            background-color: #9c4db7;
+        }
+
+        /* Align form to the center of the page */
+        form {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: left;
+            background-color: #1c1c1c;
+            border-radius: 8px;
+            border: 2px solid #7c1880;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+        /* Adjust for a more consistent appearance */
+        .form-group {
+            margin-bottom: 20px;
+        }
+        /* Center the submit button */
+        .submit-container {
+            text-align: center; 
+        }
+        .category-group {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .loader {
+            border: 16px solid #f3f3f3; /* Light grey */
+            border-top: 16px solid #7c1880; 
+            border-radius: 50%;
+            width: 120px;
+            height: 120px;
+            animation: spin 2s linear infinite;
+            position: fixed; /* Position the center of the window */
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1000; /* Ensure it's above other items */
+        }        
+
+        @keyframes spin {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .category-group {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            input[type="number"] {
+                width: 100%;
+                max-width: 100%;
+                margin-top: 10px;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <h1>Define Order for Multinomial Columns</h1>
+    <h2>Enter the order of each category from lowest to highest</h2>
+    <p style="text-align: center;">Example: High School: 1 | Bachelor: 2 | Master: 3</p>
+    <form action="/choose_n_clusters" method="post">
+        {% for index, row in multinomial_columns_df.iterrows() %}
+            <div class="card">
+                <h3>{{ row['Column Name'] }}</h3>
+                <p>Specify the order of categories for {{ row['Column Name'] }}:</p>
+                {% for category in row['Categories'] %}
+                    <div class="category-group">
+                        <label>{{ category }}</label>
+                        <input type="number" name="{{ row['Column Name'] }}_order_{{ category }}" min="1" max="{{ row['Number of Categories'] }}">
+                    </div>
+                {% endfor %}
+            </div>
+        {% endfor %}
+        <!-- Centering the submit button -->
+        <div class="button-container">
+            <a href="javascript:history.back()" class="go-back-btn">Go Back</a>
+            <input type="submit" value="Submit and proceed">
+        </div>
+    </form>
+    <!-- Loader HTML -->
+    <div class="loader" style="display:none;" id="loader"></div>
+    <!-- JS script for loader element -->
+    <script>
+    document.addEventListener("DOMContentLoaded", function(){
+        var form = document.querySelector("form");
+        form.onsubmit = function(){
+            document.getElementById("loader").style.display = "block";
+        };
+    });
+    </script>
+</body>
+
+</html>

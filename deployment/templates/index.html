@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+ 
+<head>
+    <title>Upload Your Data</title>
+    <!-- Link to the Favicon -->
+    <link rel="icon" href="{{ url_for('static', filename='images/favicon.ico') }}" type="image/x-icon">
+    <style>
+           body {
+            font-family: 'Arial', sans-serif;
+            background-color: #000000; /* Black background */
+            color: #FFFFFF;
+            margin: 0;
+            padding: 0;
+        }
+        h1 {
+            color: #FFFFFF; 
+            font-size: 40px;
+            padding-top: 15px; /* Adds space at the top inside the h1 */
+            padding-bottom: 20px; /* Adds space at the bottom inside the h1 */
+            text-align: center; /* Centers the title */
+        }
+        h2 {
+            margin-top: 30px;
+            font-size: 24px;
+            color: #FFFFFF; 
+            text-align: Center; 
+        }
+        h3 {
+            margin-top: 100px;
+            margin-bottom: 20px;
+            color: #FFFFFF; 
+            font-size: 20px;
+            text-align: Center; 
+        }
+        .form-container {
+            text-align: center;
+            margin-top: 20px;
+            padding: 10px 20px;
+            border-radius: 4px; 
+        }
+        /* Style the submit button */
+        input[type="submit"] {
+            background-color: #7c1880;
+            color: #ffffff;
+            border: none;
+            padding: 22px 30px;
+            border-radius: 4px;
+            font-size: 15px;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #9c4db7; 
+        }
+        
+        /* Style the file input button */
+        input[type="file"] {
+            color: #ffffff;
+            background-color: #7c1880;
+            border: none;
+            padding: 20px;
+            border-radius: 4px;
+            font-size: 15px;
+            margin-bottom: 10px;
+            cursor: pointer;
+        }
+        input[type="file"]:hover {
+            background-color: #9c4db7; 
+        }
+    
+        img {
+            margin-bottom: 15px;
+            max-width: 100%; /* Ensures responsiveness */
+            display: block;  /* Turns the image into a block-level element */
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .loader {
+            border: 16px solid #f3f3f3; /* Light grey */
+            border-top: 16px solid #7c1880; 
+            border-radius: 50%;
+            width: 120px;
+            height: 120px;
+            animation: spin 2s linear infinite;
+            position: fixed; /* Position the center of the window */
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1000; /* Ensure it's above other items */
+        }        
+
+        @keyframes spin {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+    
+    </style>
+</head>
+ 
+<body>
+    <h1>Welcome to the K-Means Clustering Engine</h1>
+    <h2>From Raw Data to Analysis</h2>
+    <img src="/static/images/k-means-clustering-pipeline-visualization.png" alt="K-Means Clustering Pipeline Visualization">
+    <h3>Lets get started: Upload your Excel file (.xlsx)</h3>
+    <div class="form-container">
+    <form action="{{ url_for('view_data') }}" method="post" enctype="multipart/form-data">
+        <input type="file" name="file"
+            accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
+        <input type="submit" value="Upload">
+    </form>
+    </div>
+    <!-- Loader HTML -->
+    <div class="loader" style="display:none;" id="loader"></div>
+    <!-- JS script for loader element -->
+    <script>
+    document.addEventListener("DOMContentLoaded", function(){
+        var form = document.querySelector("form");
+        form.onsubmit = function(){
+            document.getElementById("loader").style.display = "block";
+        };
+    });
+    </script>
+</body>
+ 
+</html>

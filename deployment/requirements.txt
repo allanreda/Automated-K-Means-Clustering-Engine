@@ -1,0 +1,10 @@
+flask==3.0.3
+flask-session==0.8.0
+pandas==2.2.1
+numpy==1.26.4
+scikit-learn==1.4.1.post1
+matplotlib==3.8.3
+xlsxwriter==3.2.0
+gunicorn==23.0.0
+openpyxl==3.1.2
+google-cloud-secret-manager==2.20.2

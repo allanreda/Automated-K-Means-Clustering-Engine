@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Cluster Analysis</title>
+    <!-- Link to the Favicon -->
+    <link rel="icon" href="{{ url_for('static', filename='images/favicon.ico') }}" type="image/x-icon">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #000000;
+            color: #FFFFFF;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            color: #FFFFFF;
+            font-size: 40px;
+            padding-top: 15px;
+            padding-bottom: 20px;
+            text-align: center;
+        }
+
+        h2, h3 {
+            color: #FFFFFF;
+            text-align: center;
+            margin: 15px 0;
+        }
+
+        /* Styling the Descriptive Statistics tables */
+        table {
+            margin: 20px auto;
+            border-collapse: collapse;
+            width: 100%; /* Set to 100% for responsive layout */
+            color: #FFFFFF;
+        }
+
+        table, th, td {
+            border: 2px solid #7c1880;
+            padding: 10px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #7c1880;
+            color: #FFFFFF;
+            font-size: 18px;
+        }
+
+        td {
+            background-color: #1c1c1c;
+        }
+
+        /* Responsive table container to allow horizontal scrolling */
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
+            margin: 0 auto;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        /* Centered and flex display for images */
+        .chart-container {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            margin: 20px auto;
+            width: 100%;
+            padding: 0 10px;
+            box-sizing: border-box;
+        }
+
+        img {
+            width: 100%;
+            max-width: 45%;
+            margin: 10px;
+            border-radius: 8px;
+            border: 2px solid #7c1880;
+            box-shadow: 0 4px 12px rgba(124, 24, 128, 0.5);
+        }
+        
+        /* Style the download buttons */
+        .download-button-container {
+            display: flex;
+            justify-content: center; /* Center both buttons */
+            max-width: 500px;
+            margin: 20px auto; /* Centers the flex container */
+            gap: 20px; /* Controls the gap between the buttons */
+        }
+        .download-data-btn {
+            background-color: #7c1880;
+            color: #ffffff;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            display: inline-block;
+            text-decoration: none; /* Remove underline for the Go Back link */
+            margin: 0 10px; /* Space between buttons */
+            margin-top: 10px;
+        }
+        .download-data-btn:hover {
+            background-color: #9c4db7;
+        }
+
+        /* Style the return to frontpage and go back buttons */
+        .button-container {
+            display: flex;
+            justify-content: center; /* Center both buttons */
+            max-width: 500px;
+            margin: 20px auto; /* Centers the flex container */
+            gap: 20px; /* Controls the gap between the buttons */
+        }
+        .return-to-frontpage-btn, .go-back-btn {
+            background-color: #7c1880;
+            color: #ffffff;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            display: inline-block;
+            text-decoration: none; /* Remove underline for the Go Back link */
+            margin: 0 10px; /* Space between buttons */
+            margin-top: 30px;
+        }
+        .return-to-frontpage-btn:hover, .go-back-btn:hover {
+            background-color: #9c4db7;
+        }
+
+        /* Accordion container */
+        .accordion-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0 auto;
+            max-width: 100%;
+        }
+
+        .accordion {
+            background-color: #1c1c1c;
+            color: #FFFFFF;
+            cursor: pointer;
+            padding: 18px;
+            width: 100%;
+            max-width: 600px;
+            margin: 10px auto;
+            border: none;
+            text-align: center;
+            outline: none;
+            font-size: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+        }
+
+        .accordion.active, .accordion:hover {
+            background-color: #7c1880;
+        }
+
+        /* Accordion content (hidden by default) */
+        .accordion-content {
+            display: none;
+            overflow: hidden;
+            padding: 0 18px;
+            background-color: #1c1c1c;
+            border-radius: 8px;
+            box-shadow: 0px 4px 10px rgba(124, 24, 128, 0.4);
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .loader {
+            border: 16px solid #f3f3f3; /* Light grey */
+            border-top: 16px solid #7c1880; 
+            border-radius: 50%;
+            width: 120px;
+            height: 120px;
+            animation: spin 2s linear infinite;
+            position: fixed; /* Position the center of the window */
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1000; /* Ensure it's above other items */
+        }        
+
+        @keyframes spin {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        /* Responsive adjustments */
+        @media screen and (max-width: 768px) {
+            img {
+                max-width: 100%; /* Make images full-width on smaller screens */
+            }
+
+            .chart-container {
+                display: block; /* Stack the charts vertically */
+            }
+
+            table {
+                width: 100%; /* Ensure table is full width */
+            }
+
+            .accordion {
+                width: 100%;
+            }
+
+            .table-container {
+                padding: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Cluster Analysis Results</h1>
+
+    <div class="accordion-container">
+        {% for cluster_result in cluster_analysis_results %}
+            <button class="accordion">Cluster {{ loop.index }}</button>
+            <div class="accordion-content">
+                <h2>Descriptive Statistics of Numerical Variables</h2>
+                <div class="table-container">
+                    {{ cluster_result['Descriptive Statistics'] | safe }}
+                </div>
+
+                <h2>Distribution of Numerical Variables</h2>
+                <div class="chart-container">
+                    {% for histogram in cluster_result['Histograms'] %}
+                        <img src="data:image/png;base64,{{ histogram }}" alt="Histogram">
+                    {% endfor %}
+                </div>
+
+                <h2>Distribution of Categorical Variables</h2>
+                <div class="chart-container">
+                    {% for pie_chart in cluster_result['Pie Charts'] %}
+                        <img src="data:image/png;base64,{{ pie_chart }}" alt="Pie Chart">
+                    {% endfor %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    <!-- Download Button -->
+    <div class="download-button-container">
+        <a href="{{ url_for('download_clustered_df') }}" class="download-data-btn">Download Clustered Data</a> 
+    </div>
+
+    <div class="button-container">
+        <a href="javascript:history.back()" class="go-back-btn">Go Back</a>
+        <a href="/" class="return-to-frontpage-btn">Return to Frontpage</a> 
+    </div>
+
+    <script>
+        // Accordion functionality for toggling visibility
+        var accordions = document.getElementsByClassName("accordion");
+
+        for (var i = 0; i < accordions.length; i++) {
+            accordions[i].addEventListener("click", function() {
+                this.classList.toggle("active");
+                var content = this.nextElementSibling;
+                if (content.style.display === "block") {
+                    content.style.display = "none";
+                } else {
+                    content.style.display = "block";
+                }
+            });
+        }
+    </script>
+    <!-- Loader HTML -->
+    <div class="loader" style="display:none;" id="loader"></div>
+    <!-- JS script for loader element -->
+    <script>
+    document.addEventListener("DOMContentLoaded", function(){
+        var form = document.querySelector("form");
+        form.onsubmit = function(){
+            document.getElementById("loader").style.display = "block";
+        };
+    });
+    </script>
+</body>
+
+</html>

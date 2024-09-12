@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+ 
+<head>
+    <title>Data Overview</title>
+    <!-- Link to the Favicon -->
+    <link rel="icon" href="{{ url_for('static', filename='images/favicon.ico') }}" type="image/x-icon">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #000000; /* Black background */
+            color: #FFFFFF;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            color: #FFFFFF; 
+            padding-top: 15px; /* Adds space at the top inside the h1 */
+            padding-bottom: 20px; /* Adds space at the bottom inside the h1 */
+            text-align: center; /* Centers the title */
+        }
+
+        p {
+            color: #FFFFFF;
+            font-size: 20px;
+            text-align: center;
+        }
+        
+        
+        /* Style the radio buttons */
+        .radio-label {
+            font-size: 16px;
+            margin-right: 20px;
+            cursor: pointer;
+            position: relative;
+            padding-left: 35px; /* Leave space for the custom radio button */
+        }
+        .radio-label input[type="radio"] {
+            position: absolute;
+            opacity: 0; /* Hide the actual radio button */
+            cursor: pointer;
+        }
+        .radio-label .custom-radio {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 20px;
+            width: 20px;
+            background-color: #7c1880;
+            border-radius: 50%;
+        }
+        .radio-label:hover .custom-radio {
+            background-color: #9c4db7;
+        }
+        .radio-label input[type="radio"]:checked ~ .custom-radio {
+            background-color: #9c4db7;
+        }
+        .radio-label .custom-radio:after {
+            content: "";
+            position: absolute;
+            display: none;
+        }
+        .radio-label input[type="radio"]:checked ~ .custom-radio:after {
+            display: block;
+        }
+        .radio-label .custom-radio:after {
+            top: 5px;
+            left: 5px;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: white;
+        }
+        input[type="radio"]:hover{
+            background-color: #9c4db7;
+        }
+        
+
+        /* Style the submit and go back buttons */
+        .button-container {
+            display: flex;
+            justify-content: center; /* Center both buttons */
+            max-width: 400px;
+            margin: 20px auto; /* Centers the flex container */
+            gap: 20px; /* Controls the gap between the buttons */
+        }
+        input[type="submit"], .go-back-btn, .proceed-btn {
+            background-color: #7c1880;
+            color: #ffffff;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            display: inline-block;
+            text-decoration: none; /* Remove underline for the Go Back link */
+            margin: 0 10px; /* Space between buttons */
+            margin-bottom: 20px;
+        }
+        input[type="submit"]:hover, .go-back-btn:hover, .proceed-btn:hover {
+            background-color: #9c4db7;
+        }
+
+
+        /* Style the table */
+        table {
+            margin: 20px auto;
+            border-collapse: collapse;
+            width: 80%; /* Adjusts table width */
+            color: #FFFFFF;
+        }
+        table, th, td {
+            border: 2px solid #7c1880; /* Purple border for table */
+            padding: 10px;
+            text-align: center;
+        }
+        th {
+            background-color: #7c1880; /* Purple background for table headers */
+            color: #FFFFFF;
+        }
+        td {
+            background-color: #1c1c1c; /* Slightly lighter background for table cells */
+        }
+
+        /* Center content inside forms */
+        form {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .loader {
+            border: 16px solid #f3f3f3; /* Light grey */
+            border-top: 16px solid #7c1880; 
+            border-radius: 50%;
+            width: 120px;
+            height: 120px;
+            animation: spin 2s linear infinite;
+            position: fixed; /* Position the center of the window */
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1000; /* Ensure it's above other items */
+        }        
+
+        @keyframes spin {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Data Overview</h1>
+    
+    <p>This is a summary of your uploaded data:</p>
+    {{ column_types_df | safe }}
+    
+    {% if multinomial_columns_df %}
+        <p>These are all your multinomial columns:</p>
+        {{ multinomial_columns_df | safe }}
+        
+        <p>Do any of them have a specific order?</p>
+        <!-- Form with Yes/No buttons -->
+        <form action="/define_ordinals" method="post">
+            <label class="radio-label">
+                Yes
+                <input type="radio" name="order_choice" value="yes">
+                <span class="custom-radio"></span>
+            </label>
+            <label class="radio-label">
+                No
+                <input type="radio" name="order_choice" value="no">
+                <span class="custom-radio"></span>
+            </label>
+            <br><br>
+            <!-- Container for the buttons with flexbox alignment -->
+            <div class="button-container">
+                <a href="/" class="go-back-btn">Go Back</a>
+                <input type="submit" value="Submit and proceed">
+            </div>
+        </form>
+    {% else %}
+        <p>No categorical columns found in your dataset.</p>
+        <div class="button-container">
+            <a href="/" class="go-back-btn">Go Back</a>
+            <a href="/choose_n_clusters" class="proceed-btn">Proceed</a>
+        </div>
+    {% endif %}
+    <!-- Loader HTML -->
+    <div class="loader" style="display:none;" id="loader"></div>
+    <!-- JS script for loader element -->
+    <script>
+    document.addEventListener("DOMContentLoaded", function(){
+        var form = document.querySelector("form");
+        form.onsubmit = function(){
+            document.getElementById("loader").style.display = "block";
+        };
+    });
+    </script>
+</body>
+
+ 
+</html>
