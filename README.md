@@ -1,4 +1,4 @@
-# K-Means Clustering Engine
+# Automated K-Means Clustering Engine
 Try it out live at: https://kmeans-clustering-app-407428159583.europe-west3.run.app/  
 
 https://github.com/user-attachments/assets/9a87214f-1a2b-4eef-80a2-905343c06d7c  
