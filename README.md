@@ -37,10 +37,10 @@ If you don't have a dataset available, but still wish to try out the app, you ca
 
 ### Step 1 - Data Upload:  
 The dataset you're uploading must be an Excel file that follows the following guidelines.
--Column names in the first row
--Columns must only contain one datatype 
--No empty fields
--Columns containing categorical data must be of string (text) datatype in order to be identified and treated as categorical.
+- Column names in the first row  
+- Columns must only contain one datatype   
+- No empty fields  
+- Columns containing categorical data must be of string (text) datatype in order to be identified and treated as categorical.
 
 ### Step 2 - Data Overview (/view_data):  
 Here you will get the columns of your uploaded data displayed together with a definition of whether they are numerical or categorical.  
