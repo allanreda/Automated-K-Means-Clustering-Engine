@@ -1,7 +1,7 @@
 # K-Means Clustering Engine
 Try it out live at: https://kmeans-clustering-app-407428159583.europe-west3.run.app/  
 
-https://github.com/user-attachments/assets/f0941306-0305-4125-be40-62dffe0a69a3  
+https://github.com/user-attachments/assets/9a87214f-1a2b-4eef-80a2-905343c06d7c  
 
 ## Introduction
 A fully automated K-Means clustering pipeline in the form of an easy-to-use web application.  
@@ -45,13 +45,13 @@ The dataset you're uploading must be an Excel file that follows the following gu
 ### Step 2 - Data Overview (/view_data):  
 Here you will get the columns of your uploaded data displayed together with a definition of whether they are numerical or categorical.  
 If there are categorical columns with more than two categories (multinomial columns) you get to decide if any of them have a specific order you wish to define (ordinal columns).  
-![image](https://github.com/user-attachments/assets/ef63921b-b31b-4627-a8fe-478208287898)  
+![image](https://github.com/user-attachments/assets/0e3bb803-e1db-49b6-a894-9e4246a43c55)  
 If not, choose "No" and you will skip step 3 and directly proceed to step 4.
 
 ### Step 3 - Define Order for Multinomial Columns (/define_ordinals):  
 All your multinomial columns will be displayed on this page. You only have to define a specific order, for the columns where it is relevant. You can leave the rest of the columns blank.
 For the columns you do wish to define a specific order for, you need to enter the order of each category from lowest to highest. See example below:  
-![image](https://github.com/user-attachments/assets/194c030f-4a5c-4a89-8dfb-682e23f95f9e)  
+![image](https://github.com/user-attachments/assets/3260ceec-ab0d-487d-acbb-c9880d251056)  
 
 ### Step 4 - Choose Number of Clusters (/choose_n_clusters):  
 A silhouette analysis has been run in the background, which has determined the optimal number of clusters for your dataset. You now have the option to proceed with the recommended number or define your own desired number of clusters in the input field. If you wish to proceed with the recommended number of clusters, then leave the input field blank and proceed.
@@ -68,7 +68,7 @@ You also have the choice to download the clustered dataset as an Excel file. Thi
 ## Pipeline Explanation  
 In this section, we will go through the different steps of the pipeline and what is happening underneath the hood in each step.
 The whole pipeline is visualized below:
-![k-means-clustering-pipeline-visualization](https://github.com/user-attachments/assets/3280ac84-929b-460a-be87-b2977d05004f)
+![image](https://github.com/user-attachments/assets/99da10f3-418e-4d9e-ae55-e1c1cf764c59)  
 
 ### Variable Type Identification  
 Before any preprocessing can happen, we need to identify the data type of each column, which will become the variables for the K-Means model later on.
@@ -284,8 +284,7 @@ ENTRYPOINT ["gunicorn", "-b", ":8080", "app:app", "--timeout", "300", "--workers
 ```
 ### CI/CD Setup
 The CI/CD was configured to automatically redeploy on pushes to the 'prod' branch of my repository. This setup saves time and simplifies the redeployment process, compared to having to manually redeploy every time, after every change to the app's codebase.  
-![image](https://github.com/user-attachments/assets/cbfd7905-2b62-4932-90ed-75f68e399244)
-
+![image](https://github.com/user-attachments/assets/52145507-27ae-4f0e-9058-b286bace3480)  
 
 ## Technologies
 - Python: Backend development.
